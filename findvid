@@ -1,11 +1,12 @@
 #!/bin/bash
 MPVOPTS="-fs --shuffle --playlist"
 name="`basename $@`"
-find $@ -type f -exec file -N -i -- {} + | sed -n 's!: video/[^:]*$!!p' > /tmp/$name
+find  "$@"  -type f -exec file -N -i -- {} + | sed -n 's!: video/[^:]*$!!p' > /tmp/$name
+#uncomment to enable symlinks does not verify as video files
+#find   "$@"  -type l -exec file -N -i -- {} + |cut -d : -f 1 >> /tmp/$name
 if [ -s /tmp/$name ]
 then
 mpv $MPVOPTS /tmp/$name
 else
 echo "OH NO, No Videos found!!!!!"
 fi
-
