@@ -4,11 +4,8 @@ name="`basename $@`"
 find $@ -type f -exec file -N -i -- {} + | sed -n 's!: video/[^:]*$!!p' > /tmp/$name
 
 if [ -s /tmp/$name ]
-
 then
-
 mpv $MPVOPTS /tmp/$name
-
 else
 echo "OH NO, No Videos found!!!!!"
 fi
