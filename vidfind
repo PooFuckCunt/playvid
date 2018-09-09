@@ -1,0 +1,36 @@
+#!/bin/bash
+PATH="/tmp/.vidlist"
+MKDIR="/bin/mkdir"
+FIND="/usr/bin/find"
+GREP="/bin/grep"
+string="$1$2$3$4"
+empty=$(/usr/bin/basename "`pwd`")
+SPATH="$HOME/Videos"
+MPLAYER="/usr/bin/mpv --loop=0 --aspect 16:9 -shuffle -fs  -playlist"
+#MPLAYER="/usr/bin/mplayer -loop 0 -shuffle -fs -playlist"
+EXCLUDE=""'.iso|.mp3|.jpg|.png|.nfo|.rar|.zip|.gif|.pdf|.jpeg|.htm|.html|.txt|.m4a|.RAR|.css|.js'""
+$MKDIR -p  "$PATH"
+
+if [ -z "$string" ]
+
+then
+
+$FIND -L $SPATH  |$GREP -i "$empty" |$GREP -iEv $EXCLUDE  > "$PATH/$empty"  && echo -e  "\e[36mRandomly playing search results of ""$empty"" with "`/bin/cat $PATH/$empty |/usr/bin/wc -l`" search results" && $MPLAYER $PATH/$empty; exit
+echo $string
+else 
+          echo "do nothing" >> /dev/null
+
+fi
+
+
+$FIND -L $SPATH  |$GREP -i "$1" |$GREP -i "$2" |$GREP -i "$3" |$GREP -i "$4" |$GREP -iEv $EXCLUDE  > "$PATH/$string"
+
+
+$GREP -i -E  "\.{1}\w*$" "$PATH/$string" > "$PATH/0$string"
+/bin/mv "$PATH/0$string" "$PATH/$string"
+COUNT="`/bin/cat $PATH/$string |/usr/bin/wc -l`"
+echo -e  "\e[36mRandomly playing search results of ""$1 $2 $3 $4"" with "$COUNT" search results"
+echo -e "\e[0m"
+$MPLAYER $PATH/$string
+
+
